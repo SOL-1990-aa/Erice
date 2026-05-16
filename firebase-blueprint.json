@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "EntityDiscovery": {
+      "title": "Entity Discovery",
+      "description": "Information about Erce entities including fashion, textiles, and research.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["fashion", "streetwear", " textile", "research"] },
+        "summary": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        },
+        "imageUrl": { "type": "string" },
+        "details": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "summary", "imageUrl"]
+    },
+    "SearchInsight": {
+      "title": "Search Insight",
+      "description": "Cached AI insights for search queries.",
+      "type": "object",
+      "properties": {
+        "query": { "type": "string" },
+        "insight": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["query", "insight", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/entities/{entityId}": {
+      "schema": "EntityDiscovery",
+      "description": "Collection of discoverable entities."
+    },
+    "/insights/{queryId}": {
+      "schema": "SearchInsight",
+      "description": "Cache for AI-generated search insights."
+    }
+  }
+}

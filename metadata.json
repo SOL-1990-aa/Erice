@@ -1,0 +1,8 @@
+{
+  "name": "Erce Explorer",
+  "description": "An AI-powered discovery platform for fashion collections, textile design, and research, now featuring real-time web intelligence via Serp API.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}

@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Entities collection
+    match /entities/{entityId} {
+      allow read: if true; // Publicly readable discovery platform
+      allow write: if false; // Only admin via backend/console (or specialized rules)
+    }
+
+    // Insights collection (caching)
+    match /insights/{queryId} {
+      allow read: if true;
+      allow create: if isValidInsight(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    function isValidInsight(data) {
+      return data.query is string && data.query.size() <= 1000 &&
+             data.insight is string && data.insight.size() <= 5000 &&
+             data.timestamp is timestamp;
+    }
+  }
+}
